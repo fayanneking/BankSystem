@@ -154,7 +154,37 @@ class DashboardController {
 	}	
 	try {
 		def searchResults = BankAccount.search(query)
-		[searchResults: searchResults, userId:params.id, name:params.name, type:params.type]
+		render(view:'searchResults', model: [searchResults: searchResults, userId:params.id, name:params.name, type:params.type])
+	}
+	catch(e) {
+		flash.message = "Search Error."
+		redirect(action:"dashboard", params:params)
+	}
+    }
+
+    def advancedSearch = {
+	[id:params.id, name:params.name, type:params.type]	
+    }
+
+    def advancedSearchProcessing = {
+    	def accountName = params.accountName
+	def fullName = params.fullName
+	def date = params.date
+	
+	try {
+		def searchResults1
+		def searchResults2
+		def searchResults3
+
+		if(accountName) 
+			searchResults1 = BankAccount.search(accountName)
+		if(fullName) 
+			searchResults2 = BankAccount.search(fullName) 
+		if(date)
+			searchResults3 = BankAccount.search(date) 
+		
+		for( result in searchResults2
+		render(view:'searchResults', model: [searchResults: searchResults, userId:params.id, name:params.name, type:params.type])
 	}
 	catch(e) {
 		flash.message = "Search Error."

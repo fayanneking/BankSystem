@@ -27,6 +27,9 @@
 	        margin-left:100px;
 		width:50%	
 	}
+	.link {
+		margin-left:120px;
+	}
     </style>
   </head>
   <body>
@@ -43,6 +46,7 @@
 	     <tr>
 	     	<td><g:submitButton class="button" name="search" value="Search"/></td>
 	     </tr>
+	     <td><span class="link"><g:link action="advancedSearch" params="${[id:id, name:name, type:type]}"><u style="font-size:13px">Advanced Search</u></g:link></span></td></tr>
 	   </table>
 	</g:form>  
     </div>

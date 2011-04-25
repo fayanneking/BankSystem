@@ -13,9 +13,7 @@ class BankAccount {
 
 	static belongsTo = Bank
 	
-	static searchable = {
-		only = ['name']	
-	}
+	static searchable = true
 	
    	static constraints = {
 		name		blank:false
