@@ -18,7 +18,7 @@ class BootStrap {
 							    contactNo:"09226759844", 
 								bank: bdo,
 							    username:"fayanne.king", 
-							    password:"helloworld").save()
+							    password:"helloworld1").save()
 	def person1 = Person.findByName("Fayanne King")
 	bdo.addToTellers(person1)
 	bdo.addToAtms(new ATM())	
