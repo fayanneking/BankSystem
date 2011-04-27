@@ -4,7 +4,7 @@ class BankOwner extends User{
 
 	Bank bank
 	
-	static belongsTo = Bank
+	static belongsTo = [Role, Bank]
 
     	static constraints = {
 		bank		nullable:false

@@ -41,12 +41,12 @@
 		<div class="message">${flash.message}</div>
     </g:if>
 	<ul> 
-		<li class="buttons"><g:link action="createAccount" params="[id: tellerId, type:type]">Create Account</g:link></li>
-		<li class="buttons"><g:link action="removeAccount" params="[id: tellerId, type:type]">Remove Account</g:link></li>
-		<li class="buttons"><g:link controller="transaction"  action="getBalance" params="[id: bankId, type:type]">Get Balance</g:link></li>
-		<li class="buttons"><g:link controller="transaction"  action="withdraw" params="[id: bankId, type:type]">Withdraw</g:link></li>
-		<li class="buttons"><g:link controller="transaction"  action="deposit" params="[id: bankId, type:type]">Deposit</g:link></li>
-		<li class="buttons"><g:link controller="transaction"  action="transfer" params="[id: bankId, type:type]">Money Transfer</g:link></li>
+		<li class="buttons"><g:link controller="transaction" action="createAccount" params="[id: tellerId, type:type, cName:cName, aName:aName]">Create Account</g:link></li>
+		<li class="buttons"><g:link controller="transaction" action="removeAccount" params="[id: tellerId, type:type, cName:cName, aName:aName]">Remove Account</g:link></li>
+		<li class="buttons"><g:link controller="transaction"  action="getBalance" params="[id: bankId, type:type, cName:cName, aName:aName]">Get Balance</g:link></li>
+		<li class="buttons"><g:link controller="transaction"  action="withdraw" params="[id: bankId, type:type, cName:cName, aName:aName]">Withdraw</g:link></li>
+		<li class="buttons"><g:link controller="transaction"  action="deposit" params="[id: bankId, type:type, cName:cName, aName:aName]">Deposit</g:link></li>
+		<li class="buttons"><g:link controller="transaction"  action="transfer" params="[id: bankId, type:type, cName:cName, aName:aName]">Transfer</g:link></li>
 	</ul>
     </div>
   </body>

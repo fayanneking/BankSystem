@@ -99,10 +99,4 @@ class ATMController {
             redirect(action: "list")
         }
     }
-
-    def transact = {
-		def ATMInstance = ATM.get(params.id)
-		def bankId = ATMInstance?.bank?.id	
-		[atmId:params.id, bankId:bankId]
-    }
 }

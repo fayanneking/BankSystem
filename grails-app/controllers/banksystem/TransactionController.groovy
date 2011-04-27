@@ -101,65 +101,73 @@ class TransactionController {
     }
 
     def getBalance = {
-		[bankId:params.id]
+	def bank = Bank.get(params.id)
+	[bank:bank, bankId:bank?.id, type:params.type]
     }
 	
     def withdraw = {
-		[bankId:params.id]
+	def bank = Bank.get(params.id)
+	[bank:bank, bankId:bank?.id, type:params.type]
     }
 
     def deposit = {
-		[bankId:params.id]
+	def bank = Bank.get(params.id)
+	[bank:bank, bankId:bank?.id, type:params.type]
     }
 
     def transfer = {
-		[bankId:params.id]
+	def bank = Bank.get(params.id)
+	[bank:bank, bankId:bank?.id, type:params.type]
     }
 	
 	def accountBalance = {
 		def account = transactionService.findAccountByNameAndPin(params.accountName, params.pin, params.id )
+		def bank = Bank.get(params.id)
 		if(account) {
-			[bankId:params.id, accountName:params.accountName, pin:params.pin, balance:account.balance, dateCreated:account.dateCreated]
+			[bank:bank, bankId:params.id, accountName:params.accountName, pin:params.pin, balance:account.balance, dateCreated:account.dateCreated, type:params.type]
 		}
 		else {
 			flash.message = "Account does not exist."
-			render(view:'getBalance', model:[bankId:params.id])
+			render(view:'getBalance', model:[bank:bank, bankId:params.id, type:params.type])
 		}
 	}
 	
 	def withdrawFromAccount = {
+		def bank = Bank.get(params.id)
 		def account = transactionService.findAccountByNameAndPin(params.accountName, params.pin, params.id )
 		if(account) {
 			def successful = transactionService.withdraw(account, params.amount)
 			if(successful) {
 				flash.message = "Successfully withdrew ${params.amount} pesos from ${params.accountName}."
-				render(view:'accountBalance', model: [bankId:params.id, accountName:params.accountName, pin:params.pin, balance:account.balance, dateCreated:account.dateCreated])
+				render(view:'accountBalance', model: [bankId:params.id, accountName:params.accountName, pin:params.pin, balance:account.balance, dateCreated:account.dateCreated, type:params.type])
 			}
 			else {
 				flash.message = "Not enough funds."
-				render(view:'withdraw', model:[bankId:params.id])				
+				render(view:'withdraw', model:[bank:bank, bankId:params.id, type:params.type])				
 			}
 		}
 		else {
 			flash.message = "Failed to withdraw from account. Please check input details."
-			render(view:'withdraw', model:[bankId:params.id])	
+			render(view:'withdraw', model:[bank:bank, bankId:params.id, type:params.type])	
 		}			
 	}
 	
 	def depositToAccount = {
-		def account = transactionService.findAccountByName(params.accountName, params.id )
+		def bank = Bank.get(params.id)
+		def account = transactionService.findAccountByName(params.accountName, params.id)
 		if(account) {
 			transactionService.deposit(account, params.amount)
 			flash.message = "Successfully deposited ${params.amount} pesos to ${params.accountName}."
-			render(view:'accountBalance', model: [bankId:params.id, accountName:params.accountName, pin:"****", balance:account.balance, dateCreated:account.dateCreated])
+			render(view:'accountBalance', model: [bank:bank, bankId:params.id, accountName:params.accountName, pin:"****", balance:account.balance, dateCreated:account.dateCreated, type:params.type])
 		}
 		else {
 			flash.message = "Account does not exist. Please check input details."
-			render(view:'deposit', model:[bankId:params.id])		
+			render(view:'deposit', model:[bank:bank, bankId:params.id, type:params.type])		
 		}		
 	}
 	
 	def transferToAccount = {
+		def bank = Bank.get(params.id)
 		def destBankName = params.destBank
 		def srcAccount = transactionService.findAccountByNameAndPin(params.srcAccountName, params.pin, params.id)
 		def destAccount
@@ -174,16 +182,54 @@ class TransactionController {
 			def successful = transactionService.transfer(srcAccount, destAccount, params.amount)
 			if(successful) {
 				flash.message = "Successfully transferred ${params.amount} pesos from ${params.srcAccountName} to ${params.destAccountName}."
-				render(view:'accountBalance', model: [bankId:params.id, accountName:params.srcAccountName, pin:params.pin, balance:srcAccount.balance, dateCreated:srcAccount.dateCreated])
+				render(view:'accountBalance', model: [bank:bank, bankId:params.id, accountName:params.srcAccountName, pin:params.pin, balance:srcAccount.balance, dateCreated:srcAccount.dateCreated, type:params.type])
 			}
 			else {
 				flash.message = "Not enough funds. Failed to transfer ${params.amount} pesos from ${params.srcAccountName} to ${params.destAccountName}."
-				render(view:'transfer', model:[bankId:params.id])
+				render(view:'transfer', model:[bank:bank, bankId:params.id, type:params.type])
 			}
 		}
 		else {
 			flash.message = "Account/s do not exist. Please check input details."
-			render(view:'transfer', model:[bankId:params.id])
+			render(view:'transfer', model:[bank:bank, bankId:params.id, type:params.type])
+		}
+	}
+	
+	def createAccount = {
+		def tellerInstance = Teller.get(params.id)
+		def bank = tellerInstance?.bank
+		[bank:bank, tellerInstance: tellerInstance, type:params.type]
+	}
+
+	def removeAccount = {
+		def tellerInstance = Teller.get(params.id)
+		def bank = tellerInstance?.bank
+		[bank:bank, tellerInstance: tellerInstance, type:params.type]
+	}
+	
+	def saveAccount = {
+		def tellerInstance = Teller.get(params.id)
+		def isSuccessful = transactionService.createAccount(params.accountName,params.pin,params.initBal,params.applicantName,params.contactNo,params.email,params.username, params.password,tellerInstance)
+		if(isSuccessful) {
+			flash.message="Account created successfully!"
+			redirect(controller: params.cName, action: params.cName, params: params)
+		}
+		else {
+			flash.message = "Failed to create account"
+			redirect(action: "createAccount", params: params)
+		}
+		
+	}
+	
+	def deleteAccount = {
+		def tellerInstance = Teller.get(params.id)
+		if( transactionService.removeAccount(params.accountName,params.pin,tellerInstance) ) {
+			flash.message = "${params.accountName} successfully deleted."
+			redirect(controller: params.cName, action: params.cName, params: params)
+		}
+		else {
+			flash.message = "Failed to delete account. Please check input details."
+			redirect(action: "removeAccount", params:params)
 		}
 	}
 }

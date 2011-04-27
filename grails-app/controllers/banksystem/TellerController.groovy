@@ -103,48 +103,13 @@ class TellerController {
     }
 	
     def transact = {
-		if(!params.type) {
-			params.type='teller'
-		}
 		def tellerInstance = Teller.get(params.id)
 		def name = tellerInstance.name
-	    def bankId = tellerInstance?.bank?.id
-		[tellerId:params.id, bankId:bankId, type:params.type, name:name]
+	    	def bankId = tellerInstance?.bank?.id
+		def cName = 'teller'
+		def aName = 'transact'
+		[tellerId:params.id, bankId:bankId, type:'teller', name:name, cName:cName, aName:aName]
    	}
 
-	def createAccount = {
-		def tellerInstance = Teller.get(params.id)
-		[tellerInstance: tellerInstance, type:params.type]
-	}
-
-	def removeAccount = {
-		def tellerInstance = Teller.get(params.id)
-		[tellerInstance: tellerInstance, type:params.type]
-	}
 	
-	def saveAccount = {
-		def tellerInstance = Teller.get(params.id)
-		def isSuccessful = tellerService.createAccount(params.accountName,params.pin,params.initBal,params.applicantName,params.contactNo,params.email,params.username, params.password,tellerInstance)
-		if(isSuccessful) {
-			flash.message="Account created successfully!"
-			redirect(action: "transact", params: params)
-		}
-		else {
-			flash.message = "Failed to create account"
-			redirect(action: "createAccount", params: params)
-		}
-		
-	}
-	
-	def deleteAccount = {
-		def tellerInstance = Teller.get(params.id)
-		if( tellerService.removeAccount(params.accountName,params.pin,tellerInstance) ) {
-			flash.message = "${params.accountName} successfully deleted."
-			redirect(action: "transact", params: params)
-		}
-		else {
-			flash.message = "Failed to delete account. Please check input details."
-			redirect(action: "removeAccount", params:params)
-		}
-	}
 }

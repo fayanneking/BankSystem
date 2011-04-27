@@ -1,47 +1,17 @@
 package banksystem
 
 class DashboardController {
-	
-    def index = { }
-	
-	def visitBank = {
-	}
-	
-	def validateBank = {
-		def bank = Bank.findByName(params.bank)
-		if(bank && bank.location == params.location) {
-			render(view:'transactWithBank', model:[bank:bank])
-		}
-		else {
-			flash.message = "Bank does not exist in specified location."
-			render(view:'visitBank')
-		}
-	}
-	
-    def logout = { 
-        session.user = null 
-        redirect(url:resource(dir:''))
-    }
-	
-    def login = {
-        if (params.cName)
-            return [cName:params.cName, aName:params.aName]      
-    }
 
-    def validate = {
-		def user = User.findByUsername(params.username)
-		if(user && user.password == params.password) {
-			session.user = user
-	        redirect(action:"determineType", params:[id : user.id, name: user.name])
-        }
-        else {
-          flash.message = "Invalid username and password."
-          render(view:'login')
-        }
+	def springSecurityService
 	
+    	def index = { }
+
+	def getUser = {
+		def user = User.get(springSecurityService.principal.id)
+		redirect(action:'determineType', params:[id: user.id, name: user.name])
 	}
 	
-	def determineType = {
+    	def determineType = {
 		def type
 		def sysAd = SystemAdministrator.get(params.id)		
 		if(!sysAd) {
@@ -84,36 +54,6 @@ class DashboardController {
 			theDashboard = 'systemAdmin_dashboard'
 		}
 		render(view: theDashboard, model: [id: params.id, name: params.name, type: params.type])
-    }
-	
-	def signUp = {
-        if (params.cName)
-            return [cName:params.cName, aName:params.aName]      
-    }
-	
-    def validateAccount = {
-    	def account = BankAccount.findByOwner(params.accountName)
-		if( account && account.pin == params.pin ) {
-			def user = account.owner
-			if( user.username != null ) {
-				flash.message = "User has already registered for online transactions."
-				render(view:'signUp')
-			}
-			else if( User.findByUsername(params.username) ) {
-				flash.message = "Sorry. Username already taken."
-				render(view:'signUp')
-			}
-			else {
-				user.setUsername(params.username)	
-				user.setPassword(params.password)
-				session.user = user
-				redirect(action:"dashboard", params:[id : user.id, name:user.name, type:'user'])
-			}
-		}
-		else {
-			flash.message = "Invalid account name and/or pin."
-			render(view:'signUp')
-		}
     }
 
     def updateAccount = {
@@ -183,7 +123,6 @@ class DashboardController {
 		if(date)
 			searchResults3 = BankAccount.search(date) 
 		
-		for( result in searchResults2
 		render(view:'searchResults', model: [searchResults: searchResults, userId:params.id, name:params.name, type:params.type])
 	}
 	catch(e) {

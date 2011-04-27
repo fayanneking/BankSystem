@@ -6,7 +6,7 @@
     <style type="text/css" media="screen">
         form {
 	     margin-top:30px;
-	     margin-left:400px;
+	     margin-left:300px;
 	     margin-right:400px;
 	     border:1px solid #000;
 	     padding : 10px;
@@ -33,6 +33,9 @@
     <div class="message">${flash.message}</div>
     </g:if>
     <g:form action="transferToAccount" id="${bankId}">
+		<input type="hidden" name="cName" value="${cName}">
+      		<input type="hidden" name="aName" value="${aName}">
+      		<input type="hidden" name="type" value="${type}">
       <table>
         <tr class="prop">
 			<td></td><td></td><td></td>

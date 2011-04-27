@@ -24,6 +24,8 @@
             </div>
             </g:hasErrors>
             <g:form action="save" >
+		<input type="hidden" name="cName" value="${cName}">
+      		<input type="hidden" name="aName" value="${aName}">
                 <div class="dialog">
                     <table>
                         <tbody>

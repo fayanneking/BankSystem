@@ -28,17 +28,20 @@
     </head>
     <body>
         <div id="pageBody">
+	<g:if test='${flash.message}'>
+		<div class='login_message'>${flash.message}</div>
+	</g:if>
             <h1>Welcome to The Worldwide Bank System!</h1>
             <p>Feel free to login to your account or sign up for one.</p>
             <div>
 		<span class="buttons">
-			<g:link controller="dashboard" action="login">Login </g:link>
+			<g:link controller="login" action="auth" params="['spring-security-redirect':'/dashboard/loggedIn']">Login </g:link>
 		</span>
 		<span class="buttons">
-			<g:link controller="dashboard" action="signUp">Sign Up </g:link>
+			<g:link controller="login" action="signUp">Sign Up </g:link>
 		</span>
 	    </div>
-	    <div><g:link controller="dashboard" action="visitBank"><u style="font-size:14px">Click here to visit bank without logging in.</u></g:link></div>
+	    <div><g:link controller="visitBank" action="visitBank"><u style="font-size:14px">Click here to visit bank without logging in.</u></g:link></div>
         </div>
     </body>
 </html>

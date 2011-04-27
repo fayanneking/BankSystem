@@ -6,12 +6,12 @@ class BankSystemTagLib {
 		  out << "<span style='float:left;margin:3px 0px 0px 10px;font-size:13px'>"
 	      	  out << "Welcome ${session.user}."
 	          out << "</span><span style='float:right;margin:3px 10px 0px 0px;font-size:13px'>"
-	          out << "<a href='${createLink(controller:'dashboard', action:'logout')}'>"
+	          out << "<a href='${createLink(controller:'login', action:'logout')}'>"
 	          out << "Logout </a></span>"
 		}
 		else{
 		  out << "<span style='float:right;margin:3px 10px 0px 0px;font-size:13px'>"
-		  out << "<a href='${createLink(controller:'dashboard', action:'login')}'>"
+		  out << "<a href='${createLink(controller:'login', action:'auth')}'>"
 		  out << "Login </a></span>"
 		}
 		out << "</div><br/>"

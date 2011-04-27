@@ -6,7 +6,7 @@ class Teller extends User{
 
 	static hasMany = [transactions:Transaction]
 	
-	static belongsTo = Bank
+	static belongsTo = [Bank, Role]
 
    	static constraints = {
 		transactions		nullable:true

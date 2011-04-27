@@ -38,6 +38,9 @@
     </g:if>
 	<h1>Account Details</h1>
     <g:form id="${bankId}">
+      <input type="hidden" name="cName" value="${cName}">
+      <input type="hidden" name="aName" value="${aName}">
+      <input type="hidden" name="type" value="${type}">
       <table>
         <tr class="prop">
 		  <td></td><td></td><td></td>

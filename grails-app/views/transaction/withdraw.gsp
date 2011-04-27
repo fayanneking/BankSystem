@@ -33,6 +33,9 @@
     <div class="message">${flash.message}</div>
     </g:if>
     <g:form action="withdrawFromAccount" id="${bankId}">
+		<input type="hidden" name="cName" value="${cName}">
+      		<input type="hidden" name="aName" value="${aName}">
+      		<input type="hidden" name="type" value="${type}">
       <table>
         <tr class="prop">
 	  <td></td><td></td><td></td>
