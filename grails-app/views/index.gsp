@@ -35,7 +35,7 @@
             <p>Feel free to login to your account or sign up for one.</p>
             <div>
 		<span class="buttons">
-			<g:link controller="login" action="auth" params="['spring-security-redirect':'/dashboard/loggedIn']">Login </g:link>
+			<g:link controller="login" action="auth" params="['spring-security-redirect': '/login/verified']">Login </g:link>
 		</span>
 		<span class="buttons">
 			<g:link controller="login" action="signUp">Sign Up </g:link>

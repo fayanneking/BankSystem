@@ -32,10 +32,47 @@ class LoginController {
 
 	private final authenticationTrustResolver = new AuthenticationTrustResolverImpl()
 
+	def getUser = {
+		def user = authenticateService.principal()
+		def username = user?.username
+		def theUser = User.findByUsername(username)
+		session.user = theUser
+		redirect(action:'determineType', params:[id: theUser.id, name: theUser.name])
+	}
+
+	def determineType = {
+		def type
+		def sysAd = SystemAdministrator.get(params.id)		
+		if(!sysAd) {
+			def bankOwner = BankOwner.findByName(params.name)
+			if(!bankOwner) {
+				def bankManager = BankManager.findByName(params.name) 
+				if(!bankManager) {
+					def teller = Teller.findByName(params.name)
+					if(!teller)
+						type='user'
+					else 
+						type='teller'
+				}
+				else
+					type='bankManager'
+			}
+			else
+				type='bankOwner'
+		}
+		else
+			type='systemAdministrator'
+		redirect(action: "dashboard", params:[id:params.id, name:params.name, type:type] )
+	}
+
+	def dashboard = {
+		[id: params.id, name: params.name, type: params.type]
+    	}
+
 	def index = {
 		if (isLoggedIn()) {
 			def user = session.user
-			redirect(controller:"dashboard", action:"determineType", params:[id : user.id, name: user.name])
+			redirect(action:"determineType", params:[id : user.id, name: user.name])
 		}
 		else {
 			redirect action: auth, params: params
@@ -44,7 +81,7 @@ class LoginController {
 
 	def logout = { 
 		session.user = null 
-		redirect(url:resource(dir:''))
+		redirect(controller:"logout", action:"index")
 	}
 	
         def validate = {
@@ -99,7 +136,7 @@ class LoginController {
 
 		if (isLoggedIn()) {
 			def user = session.user
-			redirect(controller:"dashboard", action:"determineType", params:[id : user.id, name: user.name])
+			redirect(action:"determineType", params:[id : user.id, name: user.name])
 			return
 		}
 

@@ -124,11 +124,11 @@ class TransactionController {
 		def account = transactionService.findAccountByNameAndPin(params.accountName, params.pin, params.id )
 		def bank = Bank.get(params.id)
 		if(account) {
-			[bank:bank, bankId:params.id, accountName:params.accountName, pin:params.pin, balance:account.balance, dateCreated:account.dateCreated, type:params.type]
+			[bank:bank.name, bankId:params.id, accountName:params.accountName, pin:params.pin, balance:account.balance, dateCreated:account.dateCreated, type:params.type]
 		}
 		else {
 			flash.message = "Account does not exist."
-			render(view:'getBalance', model:[bank:bank, bankId:params.id, type:params.type])
+			render(view:'getBalance', model:[bank:bank.name, bankId:params.id, type:params.type])
 		}
 	}
 	
@@ -143,12 +143,12 @@ class TransactionController {
 			}
 			else {
 				flash.message = "Not enough funds."
-				render(view:'withdraw', model:[bank:bank, bankId:params.id, type:params.type])				
+				render(view:'withdraw', model:[bank:bank.name, bankId:params.id, type:params.type])				
 			}
 		}
 		else {
 			flash.message = "Failed to withdraw from account. Please check input details."
-			render(view:'withdraw', model:[bank:bank, bankId:params.id, type:params.type])	
+			render(view:'withdraw', model:[bank:bank.name, bankId:params.id, type:params.type])	
 		}			
 	}
 	
@@ -158,11 +158,11 @@ class TransactionController {
 		if(account) {
 			transactionService.deposit(account, params.amount)
 			flash.message = "Successfully deposited ${params.amount} pesos to ${params.accountName}."
-			render(view:'accountBalance', model: [bank:bank, bankId:params.id, accountName:params.accountName, pin:"****", balance:account.balance, dateCreated:account.dateCreated, type:params.type])
+			render(view:'accountBalance', model: [bank:bank.name, bankId:params.id, accountName:params.accountName, pin:"****", balance:account.balance, dateCreated:account.dateCreated, type:params.type])
 		}
 		else {
 			flash.message = "Account does not exist. Please check input details."
-			render(view:'deposit', model:[bank:bank, bankId:params.id, type:params.type])		
+			render(view:'deposit', model:[bank:bank.name, bankId:params.id, type:params.type])		
 		}		
 	}
 	
@@ -182,29 +182,29 @@ class TransactionController {
 			def successful = transactionService.transfer(srcAccount, destAccount, params.amount)
 			if(successful) {
 				flash.message = "Successfully transferred ${params.amount} pesos from ${params.srcAccountName} to ${params.destAccountName}."
-				render(view:'accountBalance', model: [bank:bank, bankId:params.id, accountName:params.srcAccountName, pin:params.pin, balance:srcAccount.balance, dateCreated:srcAccount.dateCreated, type:params.type])
+				render(view:'accountBalance', model: [bank:bank.name, bankId:params.id, accountName:params.srcAccountName, pin:params.pin, balance:srcAccount.balance, dateCreated:srcAccount.dateCreated, type:params.type])
 			}
 			else {
 				flash.message = "Not enough funds. Failed to transfer ${params.amount} pesos from ${params.srcAccountName} to ${params.destAccountName}."
-				render(view:'transfer', model:[bank:bank, bankId:params.id, type:params.type])
+				render(view:'transfer', model:[bank:bank.name, bankId:params.id, type:params.type])
 			}
 		}
 		else {
 			flash.message = "Account/s do not exist. Please check input details."
-			render(view:'transfer', model:[bank:bank, bankId:params.id, type:params.type])
+			render(view:'transfer', model:[bank:bank.name, bankId:params.id, type:params.type])
 		}
 	}
 	
 	def createAccount = {
 		def tellerInstance = Teller.get(params.id)
 		def bank = tellerInstance?.bank
-		[bank:bank, tellerInstance: tellerInstance, type:params.type]
+		[bank:bank.name, id:tellerInstance?.id, name:tellerInstance?.name, type:params.type, cName:params.cName, aName:params.aName]
 	}
 
 	def removeAccount = {
 		def tellerInstance = Teller.get(params.id)
 		def bank = tellerInstance?.bank
-		[bank:bank, tellerInstance: tellerInstance, type:params.type]
+		[bank:bank.name, id:tellerInstance?.id, name:tellerInstance?.name, type:params.type, cName:params.cName, aName:params.aName]
 	}
 	
 	def saveAccount = {

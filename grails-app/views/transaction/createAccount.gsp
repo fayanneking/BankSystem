@@ -33,7 +33,7 @@
     <body>
         <div class="nav">
 			<g:if test="${type == 'teller'}">
-				<g:render template="/dashboard/tellerNav" model="${[id:tellerInstance?.id, name:tellerInstance?.name, type:type]}" />
+				<g:render template="/dashboard/tellerNav" model="${[id:id, name:name, type:type]}" />
 			</g:if>
 			<g:else>
 				<span class="menuButton">
@@ -46,10 +46,11 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <g:form action="saveAccount" id="${tellerInstance?.id}" >
+            <g:form action="saveAccount" id="${id}" >
 		<input type="hidden" name="cName" value="${cName}">
       		<input type="hidden" name="aName" value="${aName}">
      	   	<input type="hidden" name="type" value="${type}">
+		<input type="hidden" name="name" value="{name}">
                 <div class="dialog">
                     <table>
                         <tbody>

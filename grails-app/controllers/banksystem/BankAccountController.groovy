@@ -86,10 +86,11 @@ class BankAccountController {
 
     def delete = {
         def bankAccountInstance = BankAccount.get(params.id)
+	def name = bankAccountInstance?.name
         if (bankAccountInstance) {
             try {
                 bankAccountInstance.delete(flush: true)
-                flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'bankAccount.label', default: 'BankAccount'), params.id])}"
+                flash.message = "$name successfully deleted."
                 redirect(action: "list", params:[name: params.name, type:params.type, id: params.userId])
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {

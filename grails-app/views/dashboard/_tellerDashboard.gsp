@@ -1,5 +1,4 @@
-<%@ page import="banksystem.DashboardController" %>
-<html>
+
   <head>
     <title>Teller - Dashboard</title>
     <meta name="layout" content="main" />
@@ -34,11 +33,11 @@
   </head>
   <body>
     <div class="nav" style="font-size:15px">
-		<g:render template="tellerNav" model="${[id:id, name:name, type:type]}" />
+		<g:render template="/dashboard/tellerNav" model="${[id:id, name:name, type:type]}" />
     </div>
     <div id="pageBody" style="margin-right:280px;margin-left:280px;font-size:15px;">		
     	<h1>Quick Search For Accounts</h1>
-	<g:form action="quickSearch" params="${[id:id, name:name, type:type]}">
+	<g:form controller="search" action="quickSearch" params="${[id:id, name:name, type:type]}">
 	   <table>
 	     <tr>
 	     	<td><g:textField class="textField" name="query" value="${params.query}" /></td>
@@ -46,9 +45,9 @@
 	     <tr>
 	     	<td><g:submitButton class="button" name="search" value="Search"/></td>
 	     </tr>
-	     <td><span class="link"><g:link action="advancedSearch" params="${[id:id, name:name, type:type]}"><u style="font-size:13px">Advanced Search</u></g:link></span></td></tr>
+	     <td><span class="link"><g:link controller="search" action="advancedSearch" params="${[id:id, name:name, type:type]}"><u style="font-size:13px">Advanced Search</u></g:link></span></td></tr>
 	   </table>
 	</g:form>  
     </div>
   </body>
-</html>
+

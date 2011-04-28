@@ -46,19 +46,19 @@
     <body>
         <div class="nav">
             <g:if test="${type == 'user'}">
-		<g:render template="userNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
+		<g:render template="/dashboard/userNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
 	    </g:if>
 	    <g:elseif test="${type == 'teller'}">
-		<g:render template="tellerNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
+		<g:render template="/dashboard/tellerNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
 	    </g:elseif>
 	    <g:elseif test="${type == 'bankManager'}">
-		<g:render template="bankManagerNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
+		<g:render template="/dashboard/bankManagerNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
 	    </g:elseif>
 	    <g:elseif test="${type == 'bankOwner'}">
-		<g:render template="bankOwnerNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
+		<g:render template="/dashboard/bankOwnerNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
 	    </g:elseif>
 	    <g:elseif test="${type == 'systemAdministrator'}">
-		<g:render template="systemAdminNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
+		<g:render template="/dashboard/systemAdminNav" model="${[id:userAccount?.id, name:userAccount?.name, type:type]}" />
 	    </g:elseif>
         </div>
         <div class="body">
@@ -120,7 +120,7 @@
                                   <label for="password">Password</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userAccount, field: 'password', 'errors')}">
-                                    <g:textField name="password" value="${userAccount?.password}" />
+                                    <g:textField name="password" value="*******" />
                                 </td>
                             </tr>
 

@@ -25,9 +25,14 @@
   </head>
   <body>
     <div class="nav">
-      <span class="menuButton">
-        <a class="home" href="${resource(dir:'')}">Home</a>
-      </span>
+			<g:if test="${type == 'teller'}">
+				<g:render template="/dashboard/tellerNav" model="${[id:tellerInstance?.id, name:tellerInstance?.name, type:type]}" />
+			</g:if>
+			<g:else>
+				<span class="menuButton">
+				  <a class="home" href="${resource(dir:'')}">Home</a>
+				</span>
+			</g:else>
     </div>
     <g:if test="${flash.message}">
     <div class="message">${flash.message}</div>

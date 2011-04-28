@@ -32,7 +32,7 @@
   </head>
   <body>
     <div class="nav" style="font-size:15px">
-		<g:render template="tellerNav" model="${[id:id, name:name, type:type]}" />
+		<g:render template="/dashboard/tellerNav" model="${[id:id, name:name, type:type]}" />
     </div>
     <div id="pageBody" style="margin-right:280px;margin-left:280px;font-size:15px;">		
     	<h1>Advanced Search For Accounts</h1>

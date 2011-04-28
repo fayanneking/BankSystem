@@ -2,7 +2,7 @@ package banksystem
 
 import grails.test.*
 
-class DashboardControllerTests extends ControllerUnitTestCase {
+class SearchControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

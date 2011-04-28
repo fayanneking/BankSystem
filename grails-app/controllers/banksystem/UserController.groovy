@@ -4,6 +4,8 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def authenticateService
+
     def index = {
         redirect(action: "list", params: params)
     }
@@ -96,5 +98,37 @@ class UserController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
         }
+    }
+
+    def updateAccount = {
+	def userAccount = User.findByName(params.name)
+	if(userAccount)
+		[userAccount:userAccount, type:params.type]
+	else {
+		flash.message("User does not exist.")
+		redirect(controller: "login", action:"dashboard", params:[id: params.id, name:params.name, type:params.type])
+	}
+    }
+
+    def updateUserAccount = {
+	def userInstance = User.get(params.id)
+        if (params.version) {
+           def version = params.version.toLong()
+           if (userInstance.version > version) {                    
+           	userInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'user.label', default: 'User')] as Object[], "Another user has updated this User while you were editing")
+		render(view:"updateAccount", model:[userAccount:userInstance, type:params.type])             
+                return
+           }
+         }
+	 params.put('password', authenticateService.encodePassword(params.password))
+         userInstance.properties = params
+         if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
+         	flash.message = "Your account details have been updated."
+		render(view:"updateAccount", model:[userAccount:userInstance, type:params.type])
+         }
+         else {
+	       flash.message = "Update unsuccessful"
+               render(view:"updateAccount", model:[userAccount:userInstance, type:params.type])
+         }
     }
 }

@@ -85,7 +85,8 @@
 					<g:hiddenField name="id" value="${bankAccountInstance?.id}" />
 					<g:hiddenField name="userId" value="${userId}" />						
 					<g:hiddenField name="name" value="${name}" />							
-					<g:hiddenField name="type" value="${type}" />\</g:form>
+					<g:hiddenField name="type" value="${type}" />
+					</g:form>
 			   </td>                       
                     
                         <tr class="prop">
@@ -116,7 +117,7 @@
 						
                             <td valign="top" class="name"><g:message code="bankAccount.owner.label" default="Owner" /></td>
                             
-                            <td valign="top" class="value"><g:link controller="user" action="show" params="[userId: id, id: bankAccountInstance?.owner?.id, name: name, type:type]">${bankAccountInstance?.owner?.encodeAsHTML()}</g:link></td>
+                            <td valign="top" class="value">${bankAccountInstance?.owner?.encodeAsHTML()}</td>
                           
                         </tr>
 					

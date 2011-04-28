@@ -30,7 +30,7 @@
   <body>
     <div class="nav">
       <span class="menuButton">
-        <g:render template="tellerNav" model="${[id:id, name:name, type:type]}" />
+        <g:render template="/dashboard/tellerNav" model="${[id:id, name:name, type:type]}" />
       </span>
     </div>
     <div class="body">
